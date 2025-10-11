@@ -1,0 +1,17 @@
+{
+  "name": "blog-project-2",
+  "version": "1.0.0",
+  "description": "Blog Project to render on the front end using bootstrap",
+  "license": "MIT",
+  "author": "Israel Johnson#",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.18.3"
+  }
+}
