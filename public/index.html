@@ -43,10 +43,20 @@
 </nav>
 <main>
     <div class="container">
+       <div id="spinner" class="text-center my-3" style="display:none;">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+       </div>
 <div class="row" id="post-list">
 
     </div>
     <template id = "card-template">
+     <div id="card-spinner" class="text-center my-3" style="display:none;">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+       </div>
         <!--Post card template -->
         <div class="col-12 col-md-6 col-lg-4 mb-1 p-1">
     <div class="card h-100 shadow">
@@ -61,6 +71,9 @@
                <div class="list-group list-group-flush" id="other-posts">
                   <img src="" alt="" class="me-3" id="post-list-thumb">
                 </div>
+               </div>
+               <div class="card-footer">
+                <ul class="pagination pagination-sm justify-content-center pagination-list"></ul>
                </div>
             </div>
       </div>

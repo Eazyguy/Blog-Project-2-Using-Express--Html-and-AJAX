@@ -15,11 +15,37 @@ let Posts = require('./models/posts')
 app.use(express.static(path.join(__dirname, "public")))
 
 app.get('/api/posts', (req,res)=>{
-    Posts.find().then((posts)=>{
-        res.json(posts)
+    const {category, page = 1, limit=5} = req.query
+    const skip = (Number(page)-1) * limit
+    // const query = category ? {category} : {}
+    Posts.countDocuments({category}).then(total=>{
+        Posts.find({category})
+        .sort()
+        .skip(skip)
+        .limit(Number(limit))
+        .then((posts)=>{
+    res.json({
+        posts,
+        totalPages:Math.ceil(total/limit),
+        currentPage:(Number(page))
+    })
     }).catch(err=>{
         console.log(err)
     })
+    })
+    
+})
+
+app.get('/api/categories', (req,res)=>{
+    Posts.distinct('category').then(categories=>{
+        res.json(categories)
+    })
+})
+
+// fetch single post
+app.get('/api/posts/:title', (req, res)=>{
+    const title = req.query
+    
 })
 
 app.listen(3000, err=>{

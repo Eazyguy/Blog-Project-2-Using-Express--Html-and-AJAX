@@ -1,25 +1,39 @@
 let postCard = document.getElementById('post-list')
 let template = document.getElementById('card-template')
-postCard.innerHTML = '' 
+let spinner = document.getElementById('spinner')
 
+//postCard.innerHTML = '' 
 
-let listPost =()=>{
-    fetch('http://localhost:3000/api/posts')
+fetch('api/categories')
+.then(res => res.json())
+.then(categories =>{
+    categories.forEach(cat => {
+        listPost(cat,1)
+    });
+})
+
+let listPost =(category,page)=>{
+
+ spinner.style.display = 'block'
+ const existing = postCard.querySelector(`[data-category="${category}"]`)
+ 
+    if(existing){
+        // Show spinner in this card
+        const cardSpinner = existing.querySelector('#card-spinner')
+        console.log(cardSpinner)
+        if(cardSpinner) cardSpinner.style.display = 'block'
+    }
+
+    fetch(`http://localhost:3000/api/posts?category=${encodeURIComponent(category)}&page=${page}&limit=5`)
     .then(posts=>posts.json())
     .then(data=>{
-        
-        function groupByCategory(data){
-            return data.reduce((acc, post)=>{
-                if(!acc[post.category]) acc[post.category] = []
-                acc[post.category].push(post)
-                return acc
-            },{})
-        }
+        const {posts,totalPages,currentPage} = data
 
-        const grouped = groupByCategory(data)
-
-        Object.entries(grouped).forEach(([category,posts])=>{
         const clone = template.content.cloneNode('true')
+        const cardDiv = clone.querySelector('.col-lg-4')
+        cardDiv.dataset.category = category
+        postCard.setAttribute('data-category',category)
+
             let PostTitle = clone.querySelector('.card-title')
             PostTitle.textContent = posts[0].title.charAt(0).toUpperCase() + posts[0].title.slice(1)
             clone.querySelector('.card-text').textContent= `${posts[0].body.length > 100 ? posts[0].body.slice(0,200)+'...' : posts[0].body}`
@@ -45,34 +59,52 @@ let listPost =()=>{
                 listGroup.appendChild(li)
                 li.appendChild(img)
                 li.appendChild(listTitle)
+
             })
-            postCard.appendChild(clone)
 
-        })
+            console.log(totalPages)
+            // Pagination
+                const PagList = clone.querySelector('.pagination-list')
+                for(let i = 1; i <= totalPages; i++){
+                    const li = document.createElement('li')
+                    li.className = `page-item ${i == currentPage ? 'active':'' }`
+                    
+                    const btn = document.createElement('button')
+                    btn.className = 'page-link'
+                    btn.textContent = i
+                    btn.disabled = (i == currentPage)
+                    btn.addEventListener('click', ()=>{
+                        
+                        //render new page
+                        listPost(category,i)
+                    })
+                    li.appendChild(btn)
+                    PagList.appendChild(li)
+                }
+                    
+            //when a user clicks a page, re-render this category block only
+                        //remove the old one if exist
+            const existing = postCard.querySelector(`[data-category="${category}"]`)
+            console.log(existing)
+            if(existing){
+            existing.replaceWith(clone)
+            }else{
+                 postCard.appendChild(clone)
+            }
 
+            spinner.style.display = 'none'
+           
 
-
-        //    
-        //  
-        //    
-        //    
-        //    
-        //    postCard.appendChild(clone)
-
-        //data.forEach(posts => {
-          
-        //     const clone = template.content.cloneNode('true')
-
-        //    let PostTitle = clone.querySelector('.card-title')
-        //    PostTitle.textContent = posts.title.charAt(0).toUpperCase() + posts.title.slice(1)
-        //    clone.querySelector('.card-text').textContent= `${posts.body.length > 100 ? posts.body.slice(0,200)+'...' : posts.body}`
-        //    
-        //    clone.querySelector('.card-img-top').src= `${posts.image?'/images'+posts.image : '/images/photo.png'}`
-        //    
-        //});
+    }).catch(err=>{
+        console.error(`Error fetching post for ${category}:`, err);
+        spinner.style.display = 'none';
+        if(existing){
+            const cardSpinner = existing.querySelector('.card-spinner');
+            if(cardSpinner) cardSpinner.style.display = 'none';
+        }
     })
+    
 }
-
 
 
 listPost()
