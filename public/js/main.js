@@ -4,7 +4,7 @@ let spinner = document.getElementById('spinner')
 
 //postCard.innerHTML = '' 
 
-fetch('api/categories')
+fetch('/api/categories')
 .then(res => res.json())
 .then(categories =>{
     categories.forEach(cat => {
@@ -37,7 +37,7 @@ let listPost =(category,page)=>{
             let PostTitle = clone.querySelector('.card-title')
             PostTitle.textContent = posts[0].title.charAt(0).toUpperCase() + posts[0].title.slice(1)
             clone.querySelector('.card-text').textContent= `${posts[0].body.length > 100 ? posts[0].body.slice(0,200)+'...' : posts[0].body}`
-            clone.getElementById('post-link').href = `/${posts[0].title}`
+            clone.getElementById('post-link').href = `/posts.html?title=${posts[0].title}`
             clone.querySelector('.card-img-top').src= `${posts[0].image?'/images'+posts[0].image : '/images/photo.png'}`
             clone.getElementById('category').textContent = posts[0].category.charAt(0).toUpperCase() + posts[0].category.slice(1)
 
@@ -55,7 +55,7 @@ let listPost =(category,page)=>{
                 li.className = 'list-group-item d-flex align-items-center'
                 listTitle.textContent = posts.title.charAt(0).toUpperCase() + posts.title.slice(1)
                 listTitle.className= 'fw-semibold text-decoration-none'
-                listTitle.href=`/${posts.title}`
+                listTitle.href=`/posts.html?title=${posts.title}`
                 listGroup.appendChild(li)
                 li.appendChild(img)
                 li.appendChild(listTitle)
@@ -106,5 +106,13 @@ let listPost =(category,page)=>{
     
 }
 
-
 listPost()
+
+//get a single post
+const params = new URLSearchParams(window.location.search)
+console.log(params)
+fetch(`http://localhost:3000/posts/${title}`)
+.then(res=>res.json())
+.then(post=>{
+    console.log(post)
+})

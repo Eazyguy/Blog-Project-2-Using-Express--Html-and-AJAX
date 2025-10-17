@@ -11,6 +11,7 @@
     "start": "node app"
   },
   "dependencies": {
+    "dayjs": "^1.11.18",
     "express": "^5.1.0",
     "mongoose": "^8.18.3"
   }

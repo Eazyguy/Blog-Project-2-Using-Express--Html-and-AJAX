@@ -1,5 +1,20 @@
+body{
+    font: 1em sans-serif;                                                                                                   
+}
+
 #category-container{
     position: relative;
     top: -35px;
     left:10px
+}
+
+#container-body{
+    text-align: justify;
+}
+
+
+@media screen and (max-width:768px) {
+    #post-form{
+        width: 90% !important;
+    }
 }
