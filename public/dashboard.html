@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/main.css">
-    <title>EazyBlog - Add Post</title>
+    <title>Dashboard</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -40,44 +40,24 @@
     </div>
   </div>
 </nav>
-<main class="mt-5">
-   <div class="toast-container position-fixed p-3">
-    </div>
-    <div class="container w-50 border border-primary rounded p-3" id="post-form">
-        <form action="/api/posts/add" method="post">
-            <div class="d-flex justify-content-center align-items-center">
-                <label for="title">Title: </label>
-            <input type="text" class="form-control m-2" name="title">
+<main>
+    <div class="container mx-5" id="dashboard-container">
+<template id="list-template">
+    <ul class="list-group ">
+        <li class="list-group-item p-3 m-1">
+            <div class="main-info d-flex">
+                <div class=" me-auto fw-bolder fs-5"><a  class="title text-decoration-none"></a></div>
+            <div class="buttons"><a href="" class="btn btn-primary me-1 edit">Edit</a><button class="btn btn-danger delete" data-id="">Delete</button></div>
             </div>
-
-            <div class="d-flex justify-content-center align-items-center">
-                <label for="category">Category: </label>
-            <select name="category" id="category" class="form-select m-2">
-                <option selected value="">Choose a category</option>
-                <option value="technology">Technology</option>
-                <option value="health">Health</option>
-                <option value="sports">Sports</option>
-                <option value="fashion">Fashion</option>
-                <option value="education">Education</option>
-            </select>
-            </div>
-            <div class="d-flex justify-content-start align-items-center .form-check">
-            <textarea name="body" id="body" class="form-control m-2" rows="10"></textarea>
-            </div>
-            
-           <div class="d-flex justify-content-start align-items-center .form-check">
-            <label for="featured">Featured </label>
-            <input type="checkbox" id="featured" class="form-check-input m-2 mt-2" name="featured">
-            </div>
-
-             <div class="d-flex justify-content-center align-items-center .form-check">
-            <button class="btn btn-primary m-2" id="submit" type="submit">Submit</button>
-             </div>
-            
-        </form>
+            <div class="other-info text-capitalize d-inline"> 
+                <div class="d-inline me-2"><span class="fw-bold me-1">Category:</span><span class="category "></span></div>
+             <div class="d-inline"><span class="fw-bold me-1">Author:</span><span class="author"></span> </div></div>
+        </li>
+    </ul>
+</template>
     </div>
 </main>
 <script src="/js/bootstrap.js"></script>
-<script src="/js/add-post.js"></script>
+<script src="/js/dashboard.js"></script>
 </body>
 </html>

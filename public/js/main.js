@@ -24,7 +24,7 @@ let listPost =(category,page)=>{
         if(cardSpinner) cardSpinner.style.display = 'block'
     }
 
-    fetch(`http://localhost:3000/api/posts?category=${encodeURIComponent(category)}&page=${page}&limit=5`)
+    fetch(`/api/posts?category=${encodeURIComponent(category)}&page=${page}&limit=5`)
     .then(posts=>posts.json())
     .then(data=>{
         const {posts,totalPages,currentPage} = data
@@ -108,11 +108,30 @@ let listPost =(category,page)=>{
 
 listPost()
 
-//get a single post
-const params = new URLSearchParams(window.location.search)
-console.log(params)
-fetch(`http://localhost:3000/posts/${title}`)
-.then(res=>res.json())
-.then(post=>{
-    console.log(post)
+
+// flash message
+fetch('/flash')
+.then(res => res.json())
+.then(data => {
+    if(data.message){
+        const toastEl =document.getElementById('toast')
+        const body = toastEl.querySelector('.toast-body')
+console.log(data)
+        //reset classes
+        toastEl.className = 'toast text-white show'
+
+        //add background colour based on type
+        if(data.type == 'success'){
+            toastEl.classList.add('bg-success')
+        } else if (data.type == 'danger'){
+            toastEl.classList.add('bg-danger')
+        }else{
+            toastEl.classList.add('bg-primary')
+        }
+        
+        body.textContent = data.message;
+        new boostrap.Toast(toastEl).show()
+    }
+}).catch(err=>{
+    console.log(err)
 })
