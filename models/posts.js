@@ -1,3 +1,4 @@
+const { type } = require('express/lib/response')
 const mongoose = require('mongoose')
 
 let postSchema =  mongoose.Schema({
@@ -25,6 +26,12 @@ let postSchema =  mongoose.Schema({
     featured:{
         type:String
     },
+    featuredImage:{
+        type: String
+    },
+    keywords:{
+        type: Array
+    }
 },{
     timestamps:true,
 })

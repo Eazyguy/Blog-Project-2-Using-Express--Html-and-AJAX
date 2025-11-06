@@ -12,9 +12,174 @@ body{
     text-align: justify;
 }
 
+#editor{
+    min-height: 400px;
+}
+
+#container-1{
+    max-width: 700px;
+}
+
+#container-2{
+    max-width: 250px;
+}
+
+.image-preview{
+    max-width: 250px;
+    min-height: auto;
+    height: 250px;
+    overflow: hidden;
+}
+
+#keywords{
+    width: 350px;
+}
+
+.ql-editor img{
+    max-width: 60% !important;
+    max-height: 300px !important;
+}
+
+.ql-editor{
+    font-size: 18px;
+    line-height: 1.5;
+    caret-color: black;
+    padding: 10px;
+}
+
+.ql-editor .ql-cursor {
+    border-left: 2px solid #000;
+    height: 1em;
+}
+
+.img-edit-badge{
+    position:absolute;
+    background:#0d6efd;
+    color:#fff;
+    padding:2px 6px;
+    border-radius:4px;
+    font-size:12px;
+    cursor:pointer;
+    z-index:10000;
+    display:none;
+  }
+  .img-meta-panel{
+    position:absolute;
+    background:#fff;
+    border:1px solid rgba(0,0,0,.15);
+    padding:8px;
+    border-radius:6px;
+    box-shadow:0 6px 18px rgba(0,0,0,.12);
+    z-index:10001;
+    width:220px;
+    font-size:13px;
+    display:none;
+  }
+  .img-meta-panel input, .img-meta-panel textarea {
+    width:100%; box-sizing:border-box; margin:4px 0; font-size:13px;
+  }
+  .ql-image-caption{ font-size:12px; color:#6c757d; margin-top:4px; }
+
+.img-edit-badge{ 
+    padding: .25rem .5rem; 
+    font-size: .75rem; 
+    cursor: pointer; 
+}
+
+.img-meta-panel{ 
+    max-width: 320px; 
+}
+
+.ql-image-caption{ 
+    font-size: .9rem; 
+    color: #6c757d; 
+    margin-top: .25rem; 
+}
+
+.ql-card-figure {
+  display: inline-block;
+  width: auto;
+  vertical-align: middle;
+  position: relative; /* ensure absolute children position correctly */
+}
+
+/* make image inside figure use its intrinsic width (override global max-width) */
+.ql-card-figure img {
+  display: block;
+  width: auto;
+  max-width: 100% !important; /* override broader .ql-editor img !important */
+  height: auto;
+}
+
+/* place resize handle inside bottom-right of the figure */
+.ql-img-resize-handle {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 14px;
+  height: 14px;
+  background: rgba(255,255,255,0.95);
+  border: 1px solid rgba(0,0,0,0.45);
+  border-radius: 3px;
+  cursor: se-resize;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+  z-index: 20;
+  opacity: 0;
+  transition: opacity .12s ease;
+  pointer-events: none;
+}
+
+.ql-card-figure:hover .ql-img-resize-handle {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#container-body img{
+    height: 20em;
+    display: flex;
+    justify-content: center;
+}
+
+figure{
+    margin: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+#featured-image{
+    height: 20em;
+}
 
 @media screen and (max-width:768px) {
     #post-form{
         width: 90% !important;
+        margin: auto;
     }
+
+    .image-preview{
+    max-width: 250px;
+    min-height: auto;
+    height: 250px;
+    overflow: hidden;
+}
+
+#preview{
+    margin: auto;
+}
+
+.ql-editor img{
+    max-width: 150px!important;
+    max-height: 150px!important;
+}
+
+#container-body figure img{
+    width: 100%;
+    height: 10em;
+    margin: 0 !important;
+}
+
+figure{
+    margin: 0 !important;
+}
+
 }

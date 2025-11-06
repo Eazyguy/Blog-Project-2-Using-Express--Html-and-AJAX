@@ -8,13 +8,17 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app"
+    "start": "node --env-file=.env app",
+    "dev": "node --watch --env-file=.env app"
   },
   "dependencies": {
+    "bootstrap5-tags": "github:lekoala/bootstrap5-tags",
     "dayjs": "^1.11.18",
     "express": "^5.1.0",
     "express-session": "^1.18.2",
     "express-validator": "^7.2.1",
-    "mongoose": "^8.18.3"
+    "mongoose": "^8.18.3",
+    "multer": "^2.0.2",
+    "quill": "^2.0.3"
   }
 }

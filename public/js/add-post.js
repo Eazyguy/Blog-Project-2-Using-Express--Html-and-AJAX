@@ -3,8 +3,8 @@ const toastContainer = document.querySelector('.toast-container')
 fetch('/flash')
 .then(res => res.json())
 .then(data => {
-   const message = data.message
-    message.forEach(message => {
+   const messages = (data && data.message) || []
+   messages.forEach(message => {
 
         const toastEl = document.createElement('div')
         toastEl.className = 'toast text-white'
@@ -42,5 +42,26 @@ fetch('/flash')
         new bootstrap.Toast(toastEl).show()
     }
     });
+}).catch(err => console.error(err))
+
+// Featured Image
+const imgContainer = document.querySelector('.image-preview')
+const fileInput = document.getElementById('preview')
+
+fileInput.addEventListener('change', (e)=>{
+    const file = e.target.files[0]
     
-}).catch(err=>(console.error(err)))
+    if(file){
+        const reader = new FileReader()
+        reader.onload = (e)=>{
+            const img = document.createElement('img')
+            img.src = e.target.result;
+            img.style.maxWidth = '250px';
+            img.style.maxHeight = '250px'
+
+            imgContainer.innerHTML = '';
+            imgContainer.appendChild(img)
+        }
+        reader.readAsDataURL(file)
+    }
+})

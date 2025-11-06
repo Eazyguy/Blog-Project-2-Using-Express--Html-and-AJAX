@@ -28,17 +28,38 @@ let listPost =(category,page)=>{
     .then(posts=>posts.json())
     .then(data=>{
         const {posts,totalPages,currentPage} = data
-
         const clone = template.content.cloneNode('true')
         const cardDiv = clone.querySelector('.col-lg-4')
         cardDiv.dataset.category = category
         postCard.setAttribute('data-category',category)
 
+
+
             let PostTitle = clone.querySelector('.card-title')
             PostTitle.textContent = posts[0].title.charAt(0).toUpperCase() + posts[0].title.slice(1)
-            clone.querySelector('.card-text').textContent= `${posts[0].body.length > 100 ? posts[0].body.slice(0,200)+'...' : posts[0].body}`
+
+            // working on the excerpts
+            const parser = new DOMParser()
+            const postBody = parser.parseFromString(posts[0].body, 'text/html')
+
+            console.log(postBody.body)
+
+            const walker = document.createTreeWalker(postBody.body, NodeFilter.SHOW_TEXT, {
+                acceptNode: function(node){
+                    return node.nodeValue.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT
+                }
+            })
+
+            let node;
+            let extractedText = ''
+
+            while((node = walker.nextNode())){
+                extractedText += node.nodeValue + ''
+            }
+
+           clone.querySelector('.card-text').textContent= `${extractedText.length > 100 ? extractedText.slice(0,200).trim()+'...' : extractedText.trim()}`
             clone.getElementById('post-link').href = `/posts.html?title=${posts[0].title}`
-            clone.querySelector('.card-img-top').src= `${posts[0].image?'/images'+posts[0].image : '/images/photo.png'}`
+            clone.querySelector('.card-img-top').src= `${posts[0].featuredImage? posts[0].featuredImage : '/images/photo.png'}`
             clone.getElementById('category').textContent = posts[0].category.charAt(0).toUpperCase() + posts[0].category.slice(1)
 
             const listGroup = clone.getElementById('other-posts')

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router()
+const upload = require('../config/multer')
 const {check, validationResult} = require('express-validator')
 const {
     getPost, 
@@ -24,7 +25,6 @@ router.get('/categories', getCategory)
 // fetch single post
 router.get('/posts/:title', getSinglePosts)
 
-//validation
 var validation = [
     check('title', 'Title is required').notEmpty(),
     check('category', 'Category is required').notEmpty(),
@@ -32,7 +32,7 @@ var validation = [
 ]
 
 //Add posts
-router.post('/posts/add', validation, addPost)
+router.post('/posts/add', upload, validation, addPost)
 
 //Edit single post
 router.get('/post/edit/:title', getSinglePosts)
@@ -42,6 +42,9 @@ router.post('/posts/edit', updatePost)
 
 //delete single post
 router.delete('/post/delete/:id', deletePost)
+
+//upload image files
+
 
 
 module.exports = router

@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
+const dayjs = require('dayjs')
+const {validationResult, check} = require('express-validator')
+const upload = require('../config/multer')
 
 let Posts = require('../models/posts')
 
@@ -10,7 +13,7 @@ const getPost =  (req,res)=>{
     // const query = category ? {category} : {}
     Posts.countDocuments({category}).then(total=>{
         Posts.find({category})
-        .sort()
+        .sort({date:-1})
         .skip(skip)
         .limit(Number(limit))
         .then((posts)=>{
@@ -26,11 +29,24 @@ const getPost =  (req,res)=>{
 }
 
 //@desc get all post
-//@route /api/addPost
+//@route /api/all-post
 const getAllPost = (req, res) => {
-    Posts.find().then(post=>{
-        res.json(post)
+    const {page=1,limit=10} = req.query
+    const skip = (Number(page)-1) * limit
+    Posts.countDocuments().then(total=>{
+        Posts.find()
+    .sort({date:-1})
+    .skip(skip)
+    .limit(Number(limit))
+    .then(post=>{
+        res.json({
+            post,
+            totalPages:Math.ceil(total/limit),
+            currentPage:(Number(page))
+        })
     })
+    })
+    
 }
 
 //@desc Get single Posts 
@@ -54,13 +70,17 @@ const getCategory = (req,res)=>{
 //route POST /api/post/add
 
 const addPost = (req,res)=>{
+
     const post = new Posts()
     post.title = req.body.title
     post.category = req.body.category
     post.body = req.body.body
     post.featured = req.body.featured
     post.date = dayjs().format('Do MMMM YYYY')
+    post.featuredImage = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    post.keywords = req.body.keywords
 
+    console.log(req.body)
     let errors = validationResult(req)
 
      console.log(errors.array())
@@ -71,7 +91,8 @@ const addPost = (req,res)=>{
         message: errors.array()
       }
       res.redirect('/add_post.html')
-     }else{
+     }
+     else{
         post.save().then(()=>{
         req.session.message = {
             type:'success',
@@ -104,6 +125,8 @@ const updatePost = (req, res) =>{
 
 }
 
+// @desc delete post
+//@route /api/posts/delete/:id
 const deletePost = (req,res)=>{
     const id = req.params.id
     Posts.deleteOne({_id:id})
