@@ -4,6 +4,7 @@ const dayjs = require('dayjs')
 const advancedFormat = require('dayjs/plugin/advancedFormat')
 const session = require('express-session')
 const post = require('./routes/post')
+const user = require('./routes/user')
 const mongoose = require('mongoose')
 const config = require('./config/database')
 const app = express()
@@ -41,6 +42,7 @@ app.use(session({
 
 //routes
 app.use('/api', post)
+app.use('/api', user)
 
 //extend dayjs
 dayjs.extend(advancedFormat)

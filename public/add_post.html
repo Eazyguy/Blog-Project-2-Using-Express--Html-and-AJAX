@@ -8,7 +8,7 @@
     <title>EazyBlog - Add Post</title>
 </head>
 <body>
-
+ 
 <template id="floating-editor">
 <div class="img-meta-panel">
   <label class="form-label mb-1">Alt<input type="text"  class="form-control form-control-sm" name="alt"></label>
@@ -48,13 +48,15 @@
           </ul>
         </li>
       </ul>
+
       <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-primary" type="submit">Search</button>
+        <input class="form-control me-2" type="search" placeholder="Search" name="search" id="search"  aria-label="Search"/>
+        <button class="btn btn-outline-primary" id="search-btn" type="submit">Search</button>
       </form>
     </div>
   </div>
 </nav>
+
 <main class="mt-5">
    <div class="toast-container position-fixed p-3">
     </div>
@@ -68,17 +70,20 @@
             <input type="text" class="form-control m-2" name="title">
             </div>
 
-            <div class="d-flex justify-content-center align-items-center">
-                <label for="category">Category: </label>
-            <select name="category" id="category" class="form-select m-2">
-                <option selected value="">Choose a category</option>
-                <option value="technology">Technology</option>
-                <option value="health">Health</option>
-                <option value="sports">Sports</option>
-                <option value="fashion">Fashion</option>
-                <option value="education">Education</option>
-            </select>
-            </div>
+            <!---<div class="d-flex justify-content-center align-items-center">-->
+            <div class="row">
+              <div class="col">
+                  <label for="category">Category: </label>
+              </div>
+              <div class="cat-container mb-2">
+                <select name="category" id="category" class="form-select" data-allow-new="true">
+                  <option selected value="">Choose a category</option>
+                  </select>
+              </div>
+            
+              </div>
+                
+            <!--</div>-->
             <div>
               <div id="editor"></div>
               <input type="hidden" name="body" id="body">
@@ -122,18 +127,5 @@
 <script src="/js/quill-custom-image-blot.js" ></script>
 <script src="/js/quill-setup.js" ></script>
 
-<script type="module">
- //tags
-import Tags from '/bootstrap5-tags/tags.js'
-
-Tags.init("#keywords",{
-  'items': [
-    {value:'book', label:'book'},
-    {value:'hand', label:'hand'},
-    
-  ],
-  'max':5
-})
-</script>
 </body>
 </html>

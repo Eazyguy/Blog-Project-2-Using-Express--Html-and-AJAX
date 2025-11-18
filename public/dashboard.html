@@ -7,6 +7,7 @@
     <title>Dashboard</title>
 </head>
 <body>
+  <!--Navigation-->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">EazyBlog</a>
@@ -34,14 +35,18 @@
         </li>
       </ul>
       <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-primary" type="submit">Search</button>
+        <input class="form-control me-2" type="search" placeholder="Search" name="search" id="search"  aria-label="Search"/>
+        <button class="btn btn-outline-primary" id="search-btn" type="submit">Search</button>
       </form>
     </div>
   </div>
 </nav>
+<!--Navigation-end-->
+
 <main>
     <div class="container mx-5" id="dashboard-container">
+
+      <!--List post template with edit and delete buttons-->
 <template id="list-template">
     <ul class="list-group ">
         <li class="list-group-item p-3 m-1">
@@ -55,10 +60,13 @@
         </li>
     </ul>
 </template>
+
+<!--pagination template-->
 <template id="pagination-template">
   <ul class="pagination pagination-md justify-content-center pagination-list"></ul>
 </template>
     </div>
+    <!--Pagination container-->
      <div id="pagination-container"></div>
 </main>
 <script src="/js/bootstrap.js"></script>

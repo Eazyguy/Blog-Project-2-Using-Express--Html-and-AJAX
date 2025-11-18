@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <title>Login</title>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="border  border-primary p-4 rounded shadow-lg" id="login-con">
+            <div class="fw-bolder text-center my-5 fs-4">Login</div>
+            
+            <form action="/login" method="POST" id="login">
+            <div class="d-flex align-items-center">
+            <label class="form-label" for="login">Login</label>
+            <input class="form-control ms-5" type="text" name="login" id="login">
+            </div>
+            <br>
+            <br>
+            <div class="d-flex align-items-center">
+            <label for="password" class="form-label">password</label>
+            <input class="form-control ms-3" type="password" name="password" id="password">
+            </div>
+            <br>
+            <br>
+            <div class="d-flex justify-content-center">
+            <button class="btn btn-primary mx-auto" id="search-btn" type="submit">Submit</button>
+            </div>
+
+        </form>
+        </div>
+
+    </div>
+
+    <script src="/js/bootstrap.bundle.min.js" type="module"></script>
+</body>
+</html>

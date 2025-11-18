@@ -9,6 +9,7 @@ const {
     addPost, 
     getAllPost, 
     updatePost,
+    searchPost,
     deletePost
 } = require('../controllers/postControllers')
 
@@ -38,7 +39,10 @@ router.post('/posts/add', upload, validation, addPost)
 router.get('/post/edit/:title', getSinglePosts)
 
 //update single post
-router.post('/posts/edit', updatePost)
+router.post('/posts/edit', upload, updatePost)
+
+//search
+router.get('/search', searchPost)
 
 //delete single post
 router.delete('/post/delete/:id', deletePost)

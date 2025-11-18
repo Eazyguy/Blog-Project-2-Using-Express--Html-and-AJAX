@@ -65,3 +65,41 @@ fileInput.addEventListener('change', (e)=>{
         reader.readAsDataURL(file)
     }
 })
+
+// keywords
+import Tags from '/bootstrap5-tags/tags.js'
+
+Tags.init("#keywords",{
+  'items': [
+    {value:'book', label:'book'},
+    {value:'hand', label:'hand'},
+    
+  ],
+  'max':5
+})
+
+//categories
+fetch('/api/categories')
+.then(res=>res.json())
+.then(data=>{
+    const category = document.getElementById('category')
+    
+    const items = data.map(op=> ({
+        value: op, label: op.charAt(0).toUpperCase() + op.slice(1)
+    }))
+
+    Tags.init("#category",{
+  'items': items,
+  'max':5
+})
+    
+})
+
+// search
+const searchBtn = document.getElementById('search-btn')
+const searchInput = document.querySelector('input[type=search]')
+
+searchBtn.addEventListener('click',(e)=>{
+    e.preventDefault()
+    window.location.href = `/search.html?search=${encodeURIComponent(searchInput.value)}`
+})

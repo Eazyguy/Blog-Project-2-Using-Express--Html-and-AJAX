@@ -67,3 +67,12 @@ del.addEventListener('click', e=>{
 })
 
 })
+
+// search
+const searchBtn = document.getElementById('search-btn')
+const searchInput = document.querySelector('input[type=search]')
+
+searchBtn.addEventListener('click',(e)=>{
+    e.preventDefault()
+    window.location.href = `/search.html?search=${encodeURIComponent(searchInput.value)}`
+})

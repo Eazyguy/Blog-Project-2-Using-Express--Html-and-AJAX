@@ -2,8 +2,6 @@ let postCard = document.getElementById('post-list')
 let template = document.getElementById('card-template')
 let spinner = document.getElementById('spinner')
 
-//postCard.innerHTML = '' 
-
 fetch('/api/categories')
 .then(res => res.json())
 .then(categories =>{
@@ -32,8 +30,6 @@ let listPost =(category,page)=>{
         const cardDiv = clone.querySelector('.col-lg-4')
         cardDiv.dataset.category = category
         postCard.setAttribute('data-category',category)
-
-
 
             let PostTitle = clone.querySelector('.card-title')
             PostTitle.textContent = posts[0].title.charAt(0).toUpperCase() + posts[0].title.slice(1)
@@ -155,4 +151,13 @@ console.log(data)
     }
 }).catch(err=>{
     console.log(err)
+})
+
+// search
+const searchBtn = document.getElementById('search-btn')
+const searchInput = document.querySelector('input[type=search]')
+
+searchBtn.addEventListener('click',(e)=>{
+    e.preventDefault()
+    window.location.href = `/search.html?search=${encodeURIComponent(searchInput.value)}`
 })

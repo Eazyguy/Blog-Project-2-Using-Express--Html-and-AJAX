@@ -150,6 +150,21 @@ figure{
     height: 20em;
 }
 
+.cat-container{
+    width: 86.6%;
+}
+
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:focus-visible {
+    box-shadow: none !important;
+    border-color: #0d6efd !important;
+    background-color: #0d6efd !important;
+}
+
+#login-con{
+    width: 400px;
+}
 @media screen and (max-width:768px) {
     #post-form{
         width: 90% !important;

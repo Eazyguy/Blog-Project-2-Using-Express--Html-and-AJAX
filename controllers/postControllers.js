@@ -2,6 +2,9 @@ const mongoose = require('mongoose')
 const dayjs = require('dayjs')
 const {validationResult, check} = require('express-validator')
 const upload = require('../config/multer')
+const cheerio = require('../config/cheerio')
+const fs = require('fs/promises')
+const path = require('path')
 
 let Posts = require('../models/posts')
 
@@ -17,6 +20,7 @@ const getPost =  (req,res)=>{
         .skip(skip)
         .limit(Number(limit))
         .then((posts)=>{
+            
     res.json({
         posts,
         totalPages:Math.ceil(total/limit),
@@ -125,19 +129,66 @@ const updatePost = (req, res) =>{
 
 }
 
+// @desc search post
+//@route /api/search
+const searchPost = (req, res)=>{
+    const {page=1,limit=10} = req.query
+    const skip = (Number(page)-1) * limit
+    const query = req.query.search
+    
+    Posts.countDocuments({$text:{$search:query}}).then(total=>{
+        Posts.find({$text:{$search:query}},{score:{$meta:'textScore'}})
+        .sort({score:{$meta:'textScore'}})
+        .skip(skip)
+        .limit(Number(limit))
+    .then(result =>{
+        res.json({
+            result,
+            totalPages:Math.ceil(total/limit),
+            currentPage:(Number(page))
+        })
+    })
+    })
+    
+}
+
 // @desc delete post
 //@route /api/posts/delete/:id
 const deletePost = (req,res)=>{
     const id = req.params.id
-    Posts.deleteOne({_id:id})
-    .then((del) => {
-        if(del.deleteCount == 0){
-            return res.status(404).send('error occured deleting')
+    Posts.findOne({_id:id})
+    .then(post =>{
+        const images = cheerio(post.body)
+        const imageLinks = [post.featuredImage, ...images]
+        
+        const deletePromises = imageLinks.map(img=>{
+            try {
+                const url = new URL(img)
+            const imageUrl = decodeURIComponent(url.pathname)
+            const imagePath = path.join(__dirname,'..','public',imageUrl)
+
+            return fs.unlink(decodeURIComponent(imagePath))
+            .catch(err=>{
+                res.status(500).send('deleting image error')
+                console.log('error deleting image', err)
+            })
+            } catch (error) {
+                console.error('image delete failed:', error.message)
+            }
+        })
+
+        return Promise.all(deletePromises).then(()=>{
+            Posts.deleteOne({_id:id})
+        }) 
+    }).then((del) => {
+        if(del.deletedCount == 0){
+            return res.status(405).send('error occured deleting')
         }else{
          return res.status(200).json({msg:'successfully deleted'})       
         }
-        
     }).catch(err=>console.error(err))
+    res.status(500).send('server error')
+    
 }
 
 module.exports = {
@@ -147,5 +198,6 @@ module.exports = {
     addPost, 
     getAllPost, 
     updatePost, 
+    searchPost,
     deletePost
 }
