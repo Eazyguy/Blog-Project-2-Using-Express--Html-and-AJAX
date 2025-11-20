@@ -8,11 +8,20 @@
     <title>Register User</title>
 </head>
 <body>
+    <!--Flash message-->
+      <div class="toast-container position-fixed p-3">
+    </div>
+    <!--regstration form-->
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="border  border-primary p-4 rounded shadow-lg" id="login-con">
             <div class="fw-bolder text-center my-5 fs-4">Register</div>
             
-            <form action="/register" method="POST" id="register">
+            <form action="/api/register" method="POST" id="register">
+            <div class="d-flex align-items-center">
+            <label class="form-label" for="username">Username<span class="text-danger">*</span></label>
+            <input class="form-control ms-5" type="text" name="username" id="username" required>
+            </div>
+            <br><br>
             <div class="d-flex align-items-center">
             <label class="form-label" for="firstname">Firstname<span class="text-danger">*</span></label>
             <input class="form-control ms-5" type="text" name="firstname" id="firstname" required>
@@ -38,8 +47,8 @@
             <br>
             <br>
             <div class="d-flex align-items-center">
-            <label for="confirm-password" class="form-label">Confirm password</label>
-            <input class="form-control ms-4" type="password" name="confirm-password" id="confirm-password">
+            <label for="confirm" class="form-label">Confirm password</label>
+            <input class="form-control ms-4" type="password" name="confirm" id="confirm">
             </div>
             <br>
             <br>
@@ -52,5 +61,6 @@
         </div>
 
     </div>
+    <script src="/js/flash.js"></script>
 </body>
 </html>

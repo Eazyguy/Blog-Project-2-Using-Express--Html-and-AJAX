@@ -8,11 +8,18 @@
     <title>Login</title>
 </head>
 <body>
+    <!--Flash message-->
+      <div class="toast-container position-fixed top-2 p-3">
+        <div id="toast" class="toast text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body"></div>
+        </div>
+    </div>
+    <!---Login form-->
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="border  border-primary p-4 rounded shadow-lg" id="login-con">
             <div class="fw-bolder text-center my-5 fs-4">Login</div>
             
-            <form action="/login" method="POST" id="login">
+            <form action="/api/login" method="POST" id="login">
             <div class="d-flex align-items-center">
             <label class="form-label" for="login">Login</label>
             <input class="form-control ms-5" type="text" name="login" id="login">
@@ -33,7 +40,7 @@
         </div>
 
     </div>
-
+    <script src="/js/flash.js"></script>
     <script src="/js/bootstrap.bundle.min.js" type="module"></script>
 </body>
 </html>
