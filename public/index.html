@@ -17,21 +17,19 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link active" id="home" aria-current="page" href="/">Home</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link" id="dashboard" href="/secure/dashboard.html">Dashboard</a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" id="add-post" href="/secure/add_post.html">Add Post</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/">Contact</a>
+          <a class="nav-link" id="register" href="/secure/admin-register.html">Add User</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-           Categories
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/"></a></li>
-            <li><a class="dropdown-item" href="#"></a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#"></a></li>
-          </ul>
+        <li class="nav-item">
+          <a class="nav-link" id="logout" href="/api/logout">Logout</a>
         </li>
       </ul>
       <form class="d-flex" role="search">
@@ -45,12 +43,9 @@
     <div class="container">
       <!--Flash message-->
       <div class="toast-container position-fixed top-2 p-3">
-        <div id="toast" class="toast text-white" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-body"></div>
-        </div>
-    </div>
-
-    <!--Spinner-->
+                </div>
+    
+   <!--Spinner-->
        <div id="spinner" class="text-center my-3" style="display:none;">
   <div class="spinner-border text-primary" role="status">
     <span class="visually-hidden">Loading...</span>
@@ -58,6 +53,7 @@
        </div>
 <div class="row" id="post-list">
 
+    </div>
     </div>
     <template id = "card-template">
      <div id="card-spinner" class="text-center my-3" style="display:none;">
@@ -88,12 +84,11 @@
         </div>
         
     </template>
-    </div>
-    </div>
-    
+        
 </main>
 <script src="/js/bootstrap.bundle.js"></script>
 <script src="/js/flash.js"></script>
+<script src="/js/auth.js"></script>
 <script src="/js/main.js"></script>
 </body>
 </html>

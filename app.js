@@ -5,10 +5,12 @@ const advancedFormat = require('dayjs/plugin/advancedFormat')
 const session = require('express-session')
 const post = require('./routes/post')
 const user = require('./routes/user')
+const misc = require('./routes/misc')
 const mongoose = require('mongoose')
 const config = require('./config/database')
 const app = express()
 const upload = require('./config/multer')
+
 
 // Connect to MongoDb Database
 mongoose.connect(config.database)
@@ -26,8 +28,6 @@ app.use('/quill',express.static(path.join(__dirname,'node_modules/quill/dist')))
 //bootstrap tag
 app.use('/bootstrap5-tags',express.static(path.join(__dirname,'node_modules/bootstrap5-tags')))
 
-console.log(path.join(__dirname,'node_modules/bootstrap5-tags'))
-
 //body parser
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
@@ -40,35 +40,28 @@ app.use(session({
     cookie:{maxAge:8640000}
 }))
 
+//protected html files
+const secureStatic = express.static(path.join(__dirname,'protected'))
+app.use('/secure', (req, res, next) =>{
+   if(req.session && req.session.userId){
+    return secureStatic(req,res,next)
+}
+req.session.message = {
+            type:'danger',
+            message:'Access Denied, Please Login'
+        }
+return res.redirect('/admin-login.html')
+})
+
 //routes
 app.use('/api', post)
 app.use('/api', user)
+app.use('/', misc)
 
 //extend dayjs
 dayjs.extend(advancedFormat)
 
-// flash notification
-app.get('/flash',(req,res)=>{
-    const message = req.session.message
-    delete req.session.message
-    res.json(message || {})
-})
 
-// uploads
-app.post('/upload', (req, res)=>{
-    upload(req, res, (err) => {
-    if (err) {
-      console.error('Upload error:', err)
-      return res.status(500).json({ error: err.message || 'Upload failed' })
-    }
-    if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' })
-    }
-    const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    console.log('Uploaded ->', imageUrl)
-    res.status(200).json({ url: imageUrl })
-  })
-})
 
 app.listen(3000, err=>{
     if(err)console.log(err)

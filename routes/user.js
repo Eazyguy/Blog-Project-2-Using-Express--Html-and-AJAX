@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const {check} = require('express-validator')
-const {addUser} = require('../controllers/userController')
+const {addUser, userLogin} = require('../controllers/userController')
 let User = require('../models/user')
 
+// register user
 const validation = [
     check('username', 'Username is required').notEmpty(),
     check('username').custom(async(username)=>{
@@ -19,6 +20,16 @@ const validation = [
     check('firstname', 'Firstname is required').notEmpty(),
     check('surname', 'surname is required').notEmpty(),
     check('email', 'Email is required').notEmpty(),
+    check('email').custom(async(email)=>{
+        
+        let query = await User.findOne({email:email})
+       
+        if(query){
+            throw new Error("Email already Exist");  
+        }else{
+            return true
+        }
+     }),
     check('password', 'Password is required').notEmpty(),
     check('confirm').custom((confirm,{req})=>{
                 if(confirm !== req.body.password){
@@ -30,5 +41,8 @@ const validation = [
 ]
 
 router.post('/register',validation, addUser)
+
+//login
+router.post('/login', userLogin)
 
 module.exports = router

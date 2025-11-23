@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/quill/quill.snow.css">
-    <title>EazyBlog - Add Post</title>
+    <title></title>
 </head>
 <body>
- 
+
 <template id="floating-editor">
 <div class="img-meta-panel">
   <label class="form-label mb-1">Alt<input type="text"  class="form-control form-control-sm" name="alt"></label>
@@ -34,7 +35,16 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/">Contact</a>
+          <a class="nav-link" id="dashboard" href="/secure/dashboard.html">Dashboard</a>
+        </li>
+         <li class="nav-item">
+          <a class="nav-link" id="add-post" href="/secure/add_post.html">Add Post</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="register" href="/secure/admin-register.html">Add User</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="logout" href="/api/logout">Logout</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -48,7 +58,6 @@
           </ul>
         </li>
       </ul>
-
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" name="search" id="search"  aria-label="Search"/>
         <button class="btn btn-outline-primary" id="search-btn" type="submit">Search</button>
@@ -56,38 +65,37 @@
     </div>
   </div>
 </nav>
-
 <main class="mt-5">
    <div class="toast-container position-fixed p-3">
     </div>
     <div  id="post-form">
-        <form id="post-form" action="/api/posts/add" method="post" enctype="multipart/form-data">
+        <form id="post-form" action="/api/posts/edit" method="post" enctype="multipart/form-data">
           <div class="row">
             <div class="col-lg-8 col-sm-12 col-md-12  p-lg-5">
               <div class="container border border-primary rounded" id="container-1">
+                <input type="hidden" name="id">
             <div class="d-flex justify-content-center align-items-center">
                 <label for="title">Title: </label>
-            <input type="text" class="form-control m-2" name="title" id="title">
+            <input type="text" class="form-control m-2" name="title">
             </div>
 
             <!---<div class="d-flex justify-content-center align-items-center">-->
             <div class="row">
               <div class="col">
-                  <label for="category">Category: </label>
+                <label for="category">Category: </label>
               </div>
               <div class="cat-container mb-2">
                 <select name="category" id="category" class="form-select" data-allow-new="true">
-                  <option selected value="">Choose a category</option>
-                  </select>
-              </div>
+                <option selected value="">Choose a category</option>
+            </select>
+            </div>
             
               </div>
                 
-            <!--</div>-->
             <div>
               <div id="editor"></div>
               <input type="hidden" name="body" id="body">
-            <!--<textarea name="body" id="body" class="form-control m-2" rows="10"></textarea>-->
+            
             </div>
             
            <div class="d-flex justify-content-start align-items-center .form-check">
@@ -117,12 +125,13 @@
             </div>
 
             </div>
-        
+            
         </form>
     </div>
 </main>
+<script src="/js/auth.js"></script>
 <script src="/js/bootstrap.bundle.min.js" type="module"></script>
-<script src="/js/add-post.js" type="module"></script>
+<script src="/js/edit_post.js" type="module"></script>
 <script src="/quill/quill.js"></script>
 <script src="/js/quill-custom-image-blot.js" ></script>
 <script src="/js/quill-setup.js" ></script>

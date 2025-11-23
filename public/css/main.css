@@ -165,6 +165,23 @@ figure{
 #login-con{
     width: 400px;
 }
+
+#logout{
+display: none;
+}
+
+#dashboard{
+display: none; 
+}
+
+#register{
+display: none; 
+}
+
+#add-post{
+    display: none;
+}
+
 @media screen and (max-width:768px) {
     #post-form{
         width: 90% !important;

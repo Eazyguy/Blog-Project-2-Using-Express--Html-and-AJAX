@@ -133,3 +133,4 @@ searchBtn.addEventListener('click',(e)=>{
     e.preventDefault()
     window.location.href = `/search.html?search=${encodeURIComponent(searchInput.value)}`
 })
+

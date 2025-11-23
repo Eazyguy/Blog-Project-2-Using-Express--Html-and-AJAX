@@ -5,8 +5,14 @@ const params = new URLSearchParams(window.location.search)
 const page = params.get('page')
 
 fetch(`/api/all-posts?page=${page || 1 }`)
-.then(res=>res.json())
+.then(res=>{
+        if(res.status === 401){
+        return window.location.href = '/secure/admin-login.html'
+    }
+    return res.json()
+})
 .then(data=>{
+    console.log(data)
     const {post, totalPages, currentPage} = data
     
     // display all posts
@@ -17,7 +23,7 @@ fetch(`/api/all-posts?page=${page || 1 }`)
          clone.querySelector('.title').href=`/posts.html?title=${data.title}`
         clone.querySelector('.author').textContent = data.author
         clone.querySelector('.category').textContent = data.category
-        clone.querySelector('.edit').href=`/edit_post.html?title=${data.title}`
+        clone.querySelector('.edit').href=`/secure/edit_post.html?title=${data.title}`
        clone.querySelector('.delete').setAttribute('data-id',data._id)
         dashboardContainer.appendChild(clone)
        
@@ -36,7 +42,7 @@ li.className = `page-item ${i == currentPage ? 'active':'' }`
 const pglink = document.createElement('a')
 pglink.className = 'btn rounded-0 page-link'
 pglink.textContent = i
-pglink.href=`/dashboard.html?page=${i}`
+pglink.href=`/secure/dashboard.html?page=${i}`
 pglink.disabled = (i == currentPage)
 
 li.appendChild(pglink)

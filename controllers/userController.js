@@ -1,4 +1,4 @@
-const{check, validationResult} = require('express-validator')
+const{validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs')
 let User = require('../models/user')
 
@@ -37,4 +37,52 @@ const addUser = (req, res) => {
         })
     }
 }
-module.exports = {addUser}
+
+//@desc add user
+//route POST /api/login
+
+const userLogin = (req, res)=>{
+const {username, password} = req.body
+
+console.log(password)
+User.findOne({username})
+.then((user)=>{
+    if(!user){
+        req.session.message = {
+            type:'danger',
+            message: 'User not found'
+      }
+      return res.redirect('/admin-login.html')
+    }
+
+    bcrypt.compare(password,user.password).then(match=>{
+    console.log(match)
+    if(!match){
+        req.session.message = {
+            type:'danger',
+            message: 'Wrong password'
+      }
+      return res.redirect('/admin-login.html')
+    }
+
+    req.session.userId = user._id;
+    req.session.message = {
+            type:'success',
+            message: 'Login Successful'
+      }
+      return res.redirect('/secure/dashboard.html')
+})
+.catch(err => {
+    console.error(err)
+    req.session.message = {
+            type:'danger',
+            message: 'An error occured'
+      }
+      return res.redirect('/admin-login.html')
+})
+
+})
+
+}
+
+module.exports = {addUser, userLogin}
