@@ -72,15 +72,14 @@ User.findOne({username})
       }
       return res.redirect('/secure/dashboard.html')
 })
-.catch(err => {
+
+}).catch(err => {
     console.error(err)
     req.session.message = {
             type:'danger',
             message: 'An error occured'
       }
       return res.redirect('/admin-login.html')
-})
-
 })
 
 }
