@@ -6,8 +6,8 @@ let User = require('../models/user')
 //route POST /api/addUser
 
 const addUser = (req, res) => {
-    const {username, firstname, surname, email, password, confirm} = req.body
-    console.log(password)
+    const {username, firstname, surname, email, password, } = req.body
+    
     let errors = validationResult(req)
 
     console.log(errors.array())

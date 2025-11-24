@@ -58,6 +58,10 @@
 
 <div class="container p-3">
 
+     <!--flash message-->
+      <div class="toast-container position-fixed top-2 p-3">
+                </div>
+
     <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-6">
             <form action="/update-password" class="my-3" method="post">
@@ -78,16 +82,16 @@
             <br>
             <br>
             <div class="d-flex justify-content-center">
-            <button class="btn btn-primary mx-auto" id="search-btn" type="submit">Submit</button>
+            <button class="btn btn-primary mx-auto" id="updatepass-btn" type="submit">Submit</button>
             </div>
 
     </form>
     
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center mt-2">
-            <form action="/adjust-category" method="post">
+            <form action="/api/adjust-category" method="post">
                 <label for="category" class="form-label mb-3"><h5>Set Categories</h5></label>
-              <select name="category[]" id="category" class="form-select" data-allow-clear="true" data-allow-new="true" multiple>
+              <select name="category" id="category" class="form-select" data-allow-clear="true" data-allow-new="true" multiple>
               <option value="" selected disabled hidden> Choose a category...</option>
               <option value="1" > Choose a category...</option>
               </select>
@@ -103,8 +107,9 @@
         </div>
             
 </main>
-<script src="/js/auth.js"></script>
+<script src="/secure/js/auth.js"></script>
 <script src="/js/bootstrap.js"></script>
 <script src="/js/settings.js" type="module"></script>    
+<script src="/js/flash.js"></script>
 </body>
 </html>
