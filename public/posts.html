@@ -17,39 +17,51 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link active" id="home" aria-current="page" href="/">Home</a>
         </li>
-        <li class="nav-item">
+          <li class="nav-item">
           <a class="nav-link" id="dashboard" href="/secure/dashboard.html">Dashboard</a>
         </li>
-        <li class="nav-item">
+         <li class="nav-item">
           <a class="nav-link" id="add-post" href="/secure/add_post.html">Add Post</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" id="register" href="/secure/admin-register.html">Add User</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" id="logout" href="/api/logout">Logout</a>
-        </li>
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
            Categories
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/"></a></li>
-            <li><a class="dropdown-item" href="#"></a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#"></a></li>
-          </ul>
+          <ul class="dropdown-menu" id="category-menu">
+            </ul>
         </li>
+             
+      <li class="nav-item dropdown " id="profile">
+      <img src="" alt="avatar" class="avatar dropdown-toggle" data-bs-toggle="dropdown">
+      <ul class="dropdown-menu">
+            <li><a class="dropdown-item d-flex justify-content-center" href="#">
+              <img src="/images/blank-profile-picture.png" alt="img-profile" class="profile dropdown-toggle img-fluid" data-bs-toggle="dropdown">
+              </a></li>
+              <div class=" text-center"><span>Hello</span> <span class="fst-italic text-capitalize" id="nav-username"></span></div>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-primary" href="/secure/edit-profile.html">Edit Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <form action="/logout" id="logoutForm" method="post"></form>
+            <li><a class="dropdown-item" onclick="document.getElementById('logoutForm').submit()" id="logout" href="#">Logout</a></li>
+          </ul>
+          </li>
+        
       </ul>
+    
       <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" name="search" id="search" aria-label="Search"/>
-        <button class="btn btn-outline-success" id="search-btn" type="submit">Search</button>
+        <input class="form-control me-2" type="search" placeholder="Search" name="search" id="search"  aria-label="Search"/>
+        <button class="btn btn-outline-primary" id="search-btn" type="submit">Search</button>
       </form>
     </div>
   </div>
 </nav>
+
 <main class="mt-4">
 <div class="container border rounded" id="container-title">
 <h1 class="post-title d-flex justify-content-evenly"></h1>
@@ -67,7 +79,9 @@
 </p></div>
 </main>
 <script src="/secure/js/auth.js"></script>
-<script src="/js/bootstrap.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/js/post.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/misc.js"></script>
 </body>
 </html>

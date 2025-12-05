@@ -15,11 +15,13 @@
     "bcryptjs": "^3.0.3",
     "bootstrap5-tags": "github:lekoala/bootstrap5-tags",
     "cheerio": "^1.1.2",
+    "connect-mongo": "^5.1.0",
     "dayjs": "^1.11.18",
     "express": "^5.1.0",
     "express-session": "^1.18.2",
     "express-validator": "^7.2.1",
     "mongoose": "^8.18.3",
+    "morgan": "^1.10.1",
     "multer": "^2.0.2",
     "quill": "^2.0.3"
   }

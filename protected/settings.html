@@ -29,21 +29,29 @@
         <li class="nav-item">
           <a class="nav-link" id="register" href="/secure/admin-register.html">Add User</a>
         </li>
-        <form action="/logout" id="logoutForm" method="post"></form>
-        <li class="nav-item">
-          <a class="nav-link" onclick="document.getElementById('logoutForm').submit()" id="logout" href="#">Logout</a>
-        </li>
-        <li class="nav-item dropdown">
+          <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
            Categories
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/"></a></li>
-            <li><a class="dropdown-item" href="#"></a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#"></a></li>
-          </ul>
+          <ul class="dropdown-menu" id="category-menu">
+            </ul>
         </li>
+
+        <li class="nav-item dropdown " id="profile">
+      <img src="" alt="avatar" class="avatar dropdown-toggle" data-bs-toggle="dropdown">
+      <ul class="dropdown-menu">
+            <li><a class="dropdown-item d-flex justify-content-center" href="#">
+              <img src="/images/blank-profile-picture.png" alt="img-profile" class="profile dropdown-toggle img-fluid" data-bs-toggle="dropdown">
+              </a></li>
+              <div class=" text-center"><span>Hello</span> <span class="fst-italic text-capitalize" id="nav-username"></span></div>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-primary" href="/secure/edit-profile.html">Edit Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <form action="/logout" id="logoutForm" method="post"></form>
+            <li><a class="dropdown-item" onclick="document.getElementById('logoutForm').submit()" id="logout" href="#">Logout</a></li>
+          </ul>
+          </li>
+      
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" name="search" id="search"  aria-label="Search"/>
@@ -64,7 +72,7 @@
 
     <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-6">
-            <form action="/update-password" class="my-3" method="post">
+            <form action="/api/update-password" class="my-3" method="post">
                 <h4>Change Password</h4>
                 <br>
                 <br>
@@ -107,9 +115,10 @@
         </div>
             
 </main>
-<script src="/secure/js/auth.js"></script>
-<script src="/js/bootstrap.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/js/settings.js" type="module"></script>    
 <script src="/js/flash.js"></script>
+<script src="/js/misc.js"></script>
 </body>
 </html>

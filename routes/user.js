@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const {check} = require('express-validator')
-const {addUser, userLogin} = require('../controllers/userController')
+const {addUser, userLogin, editProfile} = require('../controllers/userController')
 let User = require('../models/user')
+const isAuthenticated = require('../middleware/authenticated')
+const upload = require('../config/multer')
 
 // register user
 const validation = [
@@ -40,9 +42,13 @@ const validation = [
     }),
 ]
 
+//register
 router.post('/register',validation, addUser)
 
 //login
 router.post('/login', userLogin)
+
+//edit-profile
+router.post('/profile-edit', isAuthenticated, upload, editProfile)
 
 module.exports = router

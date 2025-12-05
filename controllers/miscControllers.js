@@ -1,26 +1,17 @@
-//@desc upload route
-//route POST /logout
-const logout = (req, res)=>{
-  req.session.destroy(err=>{
-    if(err) {
-      console.error(err)
-      res.redirect('/secure/dashboard.html')
-    }
-    res.redirect('/')
-  })
-}
+const upload = require('../config/multer')
+
 
 //@desc flash notification
 //route GET /flash
 const flash = (req,res)=>{
-    const message = req.session.message
+      const message = req.session.message
     delete req.session.message
     res.json(message || {})
 }
 
 //@desc upload route
 //route POST /route
-const upload = (req, res)=>{
+const uploadImage = (req, res)=>{
     upload(req, res, (err) => {
     if (err) {
       console.error('Upload error:', err)
@@ -35,4 +26,4 @@ const upload = (req, res)=>{
   })
 }
 
-module.exports = {flash, upload, logout}
+module.exports = {flash, uploadImage}

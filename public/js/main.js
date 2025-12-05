@@ -1,6 +1,9 @@
 let postCard = document.getElementById('post-list')
 let template = document.getElementById('card-template')
 let spinner = document.getElementById('spinner')
+let featuredCon = document.getElementById('featured-list')
+let featuredTemplate = document.getElementById('slide-template')
+
 
 fetch('/api/categories')
 .then(res => res.json())
@@ -8,7 +11,47 @@ fetch('/api/categories')
     categories.forEach(cat => {
         listPost(cat,1)
     });
+
+    categories.slice(0,2).forEach(cat=>{
+        featuredList(cat)
+    })
 })
+
+let featuredList = (category) =>{
+    fetch(`/api/posts/featured?category=${category}`)
+    .then(res=>res.json())
+    .then(post=>{
+
+        if(post && post.length > 0){
+        
+        const clone = featuredTemplate.content.cloneNode(true)
+        const featuredDiv = document.createElement('div')
+        featuredDiv.className = 'col-12 col-md-6 col-lg-6 mb-1 p-1'
+        const slideInner = clone.querySelector('.carousel-inner')
+        const postSlide = clone.getElementById('post-Slide')
+
+        post.forEach(feat=>{
+
+        let slideImageCon = document.createElement('div')
+        console.log(post.indexOf(feat))
+        slideImageCon.className = `carousel-item ${post.indexOf(feat) == 0? 'active':''}`
+        let slideImage = document.createElement('img')
+        slideImage.className= 'd-block w-100 feat-img'
+        slideImage.src = `${feat.featuredImage?feat.featuredImage : '/images/photo.png'}`
+        slideImageCon.appendChild(slideImage)
+        slideInner.appendChild(slideImageCon)
+        
+        })
+
+        console.log(featuredCon)
+        featuredDiv.appendChild(clone)
+        featuredCon.appendChild(featuredDiv)
+        
+        }
+    })
+}
+
+featuredList()
 
 let listPost =(category,page)=>{
 
@@ -18,7 +61,6 @@ let listPost =(category,page)=>{
     if(existing){
         // Show spinner in this card
         const cardSpinner = existing.querySelector('#card-spinner')
-        console.log(cardSpinner)
         if(cardSpinner) cardSpinner.style.display = 'block'
     }
 
@@ -62,7 +104,7 @@ let listPost =(category,page)=>{
             posts.slice(1).forEach(posts=>{
                 const li = document.createElement('li')
                 const img = document.createElement('img')
-                img.src = `${posts.image?'/images'+posts.image : '/images/photo.png'}`
+                img.src = `${posts.featuredImage?posts.featuredImage : '/images/photo.png'}`
                 img.alt = 'thumb'
                 img.className = 'me-3'
                 img.style.width = '40px'
@@ -125,12 +167,5 @@ let listPost =(category,page)=>{
 
 listPost()
 
-// search
-const searchBtn = document.getElementById('search-btn')
-const searchInput = document.querySelector('input[type=search]')
 
-searchBtn.addEventListener('click',(e)=>{
-    e.preventDefault()
-    window.location.href = `/search.html?search=${encodeURIComponent(searchInput.value)}`
-})
 

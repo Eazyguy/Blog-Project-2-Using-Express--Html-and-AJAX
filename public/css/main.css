@@ -35,6 +35,11 @@ body{
     width: 350px;
 }
 
+.card-img-top{
+    height: 250px;
+    max-width: 350;
+}
+
 .ql-editor img{
     max-width: 60% !important;
     max-height: 300px !important;
@@ -180,6 +185,21 @@ display: none;
 
 #add-post{
     display: none;
+}
+
+#profile{
+    display: none;
+}
+
+.avatar{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.profile{
+    width: 100px;
+    height: 100px;
 }
 
 @media screen and (max-width:768px) {

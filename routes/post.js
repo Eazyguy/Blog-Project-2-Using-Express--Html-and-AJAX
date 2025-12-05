@@ -10,7 +10,9 @@ const {
     getAllPost, 
     updatePost,
     searchPost,
-    deletePost
+    deletePost,
+    postCat,
+    featuredPost
 } = require('../controllers/postControllers')
 const isAuthenticated = require('../middleware/authenticated')
 
@@ -23,9 +25,6 @@ router.get('/all-posts', isAuthenticated, getAllPost)
 
 // fetch distinct categories included in all post
 router.get('/categories', getCategory)
-
-// fetch single post
-router.get('/posts/:title', getSinglePosts)
 
 var validation = [
     check('title', 'Title is required').notEmpty(),
@@ -48,8 +47,13 @@ router.get('/search', searchPost)
 //delete single post
 router.delete('/post/delete/:id', isAuthenticated, deletePost)
 
-//upload image files
+//post per category or tag
+router.get('/posts/category', postCat)
 
+//featured post
+router.get('/posts/featured', featuredPost)
 
+// fetch single post
+router.get('/posts/:title', getSinglePosts)
 
 module.exports = router

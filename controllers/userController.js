@@ -1,6 +1,7 @@
 const{validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs')
 let User = require('../models/user')
+const { request } = require('express')
 
 //@desc add user
 //route POST /api/addUser
@@ -44,7 +45,6 @@ const addUser = (req, res) => {
 const userLogin = (req, res)=>{
 const {username, password} = req.body
 
-console.log(password)
 User.findOne({username})
 .then((user)=>{
     if(!user){
@@ -55,9 +55,8 @@ User.findOne({username})
       return res.redirect('/admin-login.html')
     }
 
-    bcrypt.compare(password,user.password).then(match=>{
-    console.log(match)
-    if(!match){
+    return bcrypt.compare(password,user.password).then(match=>{
+       if(!match){
         req.session.message = {
             type:'danger',
             message: 'Wrong password'
@@ -70,7 +69,14 @@ User.findOne({username})
             type:'success',
             message: 'Login Successful'
       }
+      req.session.save(err=>{
+        if(err){
+            console.error('Error saving session:',err);
+            return res.redirect('/admin-login.html')
+        }
+      })
       return res.redirect('/secure/dashboard.html')
+
 })
 
 }).catch(err => {
@@ -84,4 +90,18 @@ User.findOne({username})
 
 }
 
-module.exports = {addUser, userLogin}
+//@desc add user
+//route POST /api/profile-edit
+
+const editProfile = (req,res) => {
+const updated = {
+    ...req.body,
+    profileImage: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+}
+
+req.session.tempUpdate = updated
+
+res.redirect('/secure/verify-password.html')
+
+}
+module.exports = {addUser, userLogin, editProfile}

@@ -2,6 +2,16 @@ const dashboard = document.getElementById('dashboard')
 const addUser = document.getElementById('register')
 const addPost = document.getElementById('add-post')
 const logout = document.getElementById('logout')
+const profile = document.getElementById('profile')
+const editProfile = document.getElementById('edit-profile')
+
+// dashboard.style.display = 'none'
+// addUser.style.display = 'none'
+// addPost.style.display = 'none'
+//logout.style.display = 'none'
+// profile.style.display = 'none'
+// if(editProfile) editProfile.style.display = 'none'
+
 
 function checkAuth(element){
     fetch('/check-auth')
@@ -15,6 +25,8 @@ function checkAuth(element){
 
 checkAuth(addPost)
 checkAuth(logout)
+checkAuth(profile)
+// checkAuth(editProfile)
 
 //Hiding page navigation item on the current page
 //home
@@ -36,3 +48,16 @@ if(window.location.pathname === '/'){
 }else{
     checkAuth(addUser)
 }
+
+//profile on nav
+fetch('/check-user')
+.then(res=>res.json())
+.then(data => {
+    const {username, profileImage} = data
+    document.getElementById('nav-username').textContent = username
+    const avatar = document.querySelector('img[alt="avatar"]')
+    avatar.src = `${profileImage?profileImage:'/images/blank-profile-picture.png'}`
+
+    const imgProfile = document.querySelector('img[alt="img-profile"]')
+    imgProfile.src = `${profileImage?profileImage:'/images/blank-profile-picture.png'}`
+})

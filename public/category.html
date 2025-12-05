@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/main.css">
-    <title>EazyBlog</title>
+    <title></title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">EazyBlog</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,36 +61,12 @@
     </div>
   </div>
 </nav>
-<main>
-    <div class="container">
-      <!--Flash message-->
-      <div class="toast-container position-fixed top-2 p-3">
-                </div>
-    
-   <!--Spinner-->
-       <div id="spinner" class="text-center my-3" style="display:none;">
-  <div class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-       </div>
-<!--featured container-->
-<div class="row" id="featured-list">
 
-</div>
-<!--post card container-->
-<div class="row " id="post-list">
 
-    </div>
-    </div>
-    <template id = "card-template">
-     <div id="card-spinner" class="text-center my-3" style="display:none;">
-  <div class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-
-       </div>
-        <!--Post card template -->
-        <div class="col-12 col-md-6 col-lg-4 mb-1 p-1">
+    <main>
+      <!--Search result card template-->
+<template id="search-template">
+    <div class="col-12 col-md-6 col-lg-4 mb-1 p-1">
     <div class="card h-100 shadow">
             <img src="" alt="thumbnail" class="card-img-top">
             <div id="category-container">
@@ -100,41 +76,29 @@
                <h5 class="card-title"></h5>
                <p class="card-text"></p>
                <a href="" class="btn btn-primary" id="post-link">Read More</a>
-               <div class="list-group list-group-flush" id="other-posts">
-                  <img src="" alt="" class="me-3" id="post-list-thumb">
-                </div>
-               </div>
-               <div class="card-footer">
-                <ul class="pagination pagination-sm justify-content-center pagination-list"></ul>
                </div>
             </div>
       </div>
-        </div>
-        
-    </template>
+</template>
 
-    <template id="slide-template">
-      <!--Post carousel template-->
-       <div id="postSlide" class="carousel slide carousel-fade" data-bs-ride="carousel">
-          <div class="carousel-inner">
-          </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#postSlide" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-prev" type="button" data-bs-target="#postSlide" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-       </div>
-    </template>
-        
-</main>
-<script src="/js/main.js"></script>
-<script src="/js/auth.js"></script>
-<script src="/js/bootstrap.bundle.min.js" ></script>
-<script src="/js/flash.js"></script>
-<script src="/js/misc.js"></script>
+<!--search result card container-->
+  <div class="container">
+    <div class="fw-bold fs-5" id="total-result"></div>
+    <div class="row" id="result-list"></div>
+  </div>
+    
+<!--pagination template-->
+<template id="pagination-template">
+  <ul class="pagination pagination-md justify-content-center pagination-list"></ul>
+</template>
+    </div>
+    <!--Pagination container-->
+     <div id="pagination-container"></div>
 
+    </main>
+    <script src="/js/auth.js"></script>
+    <script src="/js/bootstrap.bundle.min.js" type="module"></script>
+    <script src="/js/category.js" type="module"></script>
+    <script src="/js/misc.js"></script>
 </body>
 </html>

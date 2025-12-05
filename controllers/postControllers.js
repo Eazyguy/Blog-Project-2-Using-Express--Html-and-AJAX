@@ -11,6 +11,7 @@ let Posts = require('../models/posts')
 // @desc Get a list of posts grouped by category, limit=5
 // @route GET /api/posts
 const getPost =  (req,res)=>{
+    
     const {category, page = 1, limit=5} = req.query
     const skip = (Number(page)-1) * limit
     // const query = category ? {category} : {}
@@ -33,7 +34,7 @@ const getPost =  (req,res)=>{
 }
 
 //@desc get all post
-//@route /api/all-post
+//@route /api/all-posts
 const getAllPost = (req, res) => {
     const {page=1,limit=10} = req.query
     const skip = (Number(page)-1) * limit
@@ -63,8 +64,9 @@ const getSinglePosts = (req, res)=>{
 }
 
 //@desc get Categories
-//@route /api/category
+//@route /api/categories
 const getCategory = (req,res)=>{
+    console.log(req.session)
     Posts.distinct('category').then(categories=>{
         res.json(categories)
     })
@@ -108,15 +110,17 @@ const addPost = (req,res)=>{
 }
 
 //@desc update post
-//@route PUT /api/posts/edit/
+//@route POST /api/posts/edit/
 
 const updatePost = (req, res) =>{
-   const {title,category,body,featured} = req.body
+   const {title,category,body,featured, keywords} = req.body
    const updatedPost = {}
    updatedPost.title = title
    updatedPost.category = category
    updatedPost.body = body
    updatedPost.featured = featured ||''
+   updatedPost.featuredImage = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+   updatedPost.keywords = keywords
 
    Posts.findByIdAndUpdate(req.body.id, updatedPost)
    .then(post=>{
@@ -191,6 +195,47 @@ const deletePost = (req,res)=>{
     
 }
 
+// @desc post 
+//@route /api/posts/category
+
+const postCat = (req, res) =>{
+const {page=1,limit=10} = req.query
+    const skip = (Number(page)-1) * limit
+    const categoryQuery = req.query.category
+    const keywordQuery = req.query.keyword
+
+    let filter = {}
+
+    if(categoryQuery) filter.category = categoryQuery
+
+    if(keywordQuery) filter.keywords = {$in:[keywordQuery]}
+    
+        Posts.countDocuments(filter).then(total=>{
+        Posts.find(filter)
+        .sort({createdAt:-1})
+        .skip(skip)
+        .limit(Number(limit))
+    .then(result =>{
+        res.json({
+            result,
+            totalPages:Math.ceil(total/limit),
+            currentPage:(Number(page))
+        })
+    })
+    })
+    
+}
+
+const featuredPost = (req, res) => {
+
+    const {category } = req.query
+
+    Posts.find({featured:'on', category}).then(featured =>{
+       res.json(featured)
+    })
+
+}
+
 module.exports = {
     getPost, 
     getSinglePosts, 
@@ -199,5 +244,7 @@ module.exports = {
     getAllPost, 
     updatePost, 
     searchPost,
-    deletePost
+    deletePost,
+    postCat,
+    featuredPost
 }

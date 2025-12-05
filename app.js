@@ -3,14 +3,17 @@ const path = require("path")
 const dayjs = require('dayjs')
 const advancedFormat = require('dayjs/plugin/advancedFormat')
 const session = require('express-session')
+const mongoStore = require('connect-mongo')
 const post = require('./routes/post')
 const user = require('./routes/user')
 const misc = require('./routes/misc')
 const settings = require('./routes/settings')
+const auth = require('./routes/auth')
 const mongoose = require('mongoose')
 const config = require('./config/database')
 const app = express()
 const upload = require('./config/multer')
+const morgan = require('morgan')
 
 
 // Connect to MongoDb Database
@@ -19,6 +22,8 @@ let db = mongoose.connection
 db.once('open', ()=>{ 
     console.log('Successfully connected to database')
 })
+
+app.use(morgan('dev'))
 
 //public folder
 app.use(express.static(path.join(__dirname, "public")))
@@ -37,8 +42,9 @@ app.use(express.urlencoded({extended:false}))
 app.use(session({
     secret:'keyboard cat',
     resave:false,
-    saveUninitialized:true,
-    cookie:{maxAge:8640000}
+    saveUninitialized:false,
+    store:mongoStore.create({mongoUrl:config.database}),
+    cookie:{maxAge: 1000 * 24 * 60 * 60}
 }))
 
 //protected html files
@@ -59,6 +65,8 @@ app.use('/api', post)
 app.use('/api', user)
 app.use('/', misc)
 app.use('/api', settings)
+app.use('/', auth)
+
 
 //extend dayjs
 dayjs.extend(advancedFormat)
