@@ -1,26 +1,11 @@
 
 categoryMenu = document.getElementById('category-menu')
 
-fetch('/api/categories')
+fetch('/api/categorySet')
 .then(res=>res.json())
 .then(data=>{
 
-    let menu = []
-    let defaultMenu = [
-    "education",
-    "health",
-    "sports",
-    "technology"
-]
-
-    if(!data && data.length < 1){
-    menu = defaultMenu
-    }else{
-        menu = data
-    
-}
-
-       menu.forEach(cat => {
+       data.forEach(cat => {
         let menuItem = document.createElement('li')
         const menuLink = document.createElement('a')
         menuLink.className = 'dropdown-item text-capitalize'
@@ -29,8 +14,6 @@ fetch('/api/categories')
 
         menuItem.appendChild(menuLink)
         categoryMenu.appendChild(menuItem)
-
-        
     });
 
 })

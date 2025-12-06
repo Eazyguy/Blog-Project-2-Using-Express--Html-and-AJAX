@@ -99,7 +99,12 @@ User.findOne({_id:req.session.userId})
 const categories = (req, res)=>{
     Settings.findOne({category:{$ne:true}})
     .then(cat=>{
+      if(cat){
         res.json(cat.category)
+      }else{
+        res.json( [ "education","health", "sports","technology",
+])
+      }
     })
 }
 

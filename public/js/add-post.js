@@ -79,7 +79,7 @@ Tags.init("#keywords",{
 })
 
 //categories
-fetch('/api/categories')
+fetch('/api/categorySet')
 .then(res=>res.json())
 .then(data=>{
     const category = document.getElementById('category')
