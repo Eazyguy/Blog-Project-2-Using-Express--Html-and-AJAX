@@ -16,7 +16,7 @@ const quill = new Quill('#editor',{
             [{'font':[]}], [{'align':[]}], ['link','image', 'video'],['clean']
         ],
         
-        handlers:{
+         handlers:{
           image: ()=>{
             const input = document.createElement('input');
             input.setAttribute('type', 'file');
@@ -31,13 +31,13 @@ const quill = new Quill('#editor',{
             }
         }
           }
-        },
+        }, 
         clipboard:{
           matchers:[
             ['IMG', (node, delta)=> new Delta()]
           ]
-        },
-        cardEditable: true 
+        }, 
+        // cardEditable: true 
     }
 })
 
@@ -56,38 +56,123 @@ if (postForm) {
   console.warn('post-form not found: form submit handler not attached')
 }
 
-const editor = document.querySelector('#editor')
+
+
+const uploadedImages = []; // { id, file }
+let imageId = 0;
+
+
+function insertTempImage(file) {
+  const reader = new FileReader();
+  const id = 'temp-img-' + imageId++;
+  
+  reader.onload = () => {
+    const range = quill.getSelection(true);
+    quill.insertEmbed(range.index, 'image', reader.result);
+    uploadedImages.push({ id, file, base64: reader.result });
+  };
+  
+  reader.readAsDataURL(file);
+}
+
+quill.root.addEventListener('paste', (e) => {
+  const items = e.clipboardData?.items || [];
+  for (let item of items) {
+    if (item.type.startsWith('image/')) {
+      e.preventDefault();
+      insertTempImage(item.getAsFile());
+    }
+  }
+}, true);
+
+quill.root.addEventListener('drop', (e) => {[12/8, 22:50] const files = Array.from(e.dataTransfer?.files || []).filter(f => f.type.startsWith('image/'));
+  if (files.length) {
+    e.preventDefault();
+    files.forEach(file => insertTempImage(file));
+  }
+}, true);
+
+async function uploadImages() {
+  for (let { base64, file } of uploadedImages) {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const res = await fetch('/upload', { method: 'POST', body: formData });
+    const data = await res.json();
+
+    const delta = quill.getContents();
+    delta.ops.forEach(op => {
+      if (op.insert?.image === base64) {
+        op.insert.image = data.url;
+      }
+    });
+
+    quill.setContents(delta);
+  }
+
+  // Now the editor content is clean, submit it
+  const html = quill.root.innerHTML;
+  // Send html via fetch or form
+}
+
+/*const editor = document.querySelector('#editor')
 
 editor.addEventListener('click', ()=>{
   quill.focus()
 })
 
-
 quill.root.addEventListener('paste', (e) => {
-  // run first and stop Quill's default paste handling
-  e.stopImmediatePropagation()
-  e.preventDefault()
-
   const items = (e.clipboardData && e.clipboardData.items) || []
+
+  let handledImage = false
+
   for (let item of items) {
     if (item.type && item.type.indexOf('image') !== -1) {
       const file = item.getAsFile()
       if (file) uploadImage(file)
+      handledImage = true
     }
+  }
+
+  if (handledImage) {
+    e.stopImmediatePropagation()
+    e.preventDefault()
   }
 }, true)
 
 // handle drop BEFORE Quill internal drop handling (capture = true)
-quill.root.addEventListener('drop', (e) => {
-  e.stopImmediatePropagation()
-  e.preventDefault()
 
-  if (e.dataTransfer && e.dataTransfer.files.length) {
-    Array.from(e.dataTransfer.files).forEach(file => {
-      if (file.type.startsWith('image/')) uploadImage(file)
-    })
+quill.root.addEventListener('paste', (e) => {
+  const items = (e.clipboardData && e.clipboardData.items) || []
+
+  let handledImage = false
+
+  for (let item of items) {
+    if (item.type && item.type.indexOf('image') !== -1) {
+      const file = item.getAsFile()
+      if (file) uploadImage(file)
+      handledImage = true
+    }
+  }
+
+  if (handledImage) {
+    e.stopImmediatePropagation()
+    e.preventDefault()
   }
 }, true)
+
+quill.root.addEventListener('drop', (e) => {
+  const files = e.dataTransfer?.files || []
+
+  const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'))
+
+  if (imageFiles.length > 0) {
+    e.stopImmediatePropagation()
+    e.preventDefault()
+
+    imageFiles.forEach(uploadImage)
+  }
+ }, true)
 
 function uploadImage(file){
   const formData = new FormData()
@@ -109,7 +194,7 @@ function uploadImage(file){
     quill.insertEmbed(index, 'figure', { src: data.url, alt: '', caption: '' })
     quill.setSelection(index + 1)
   })
-}
+}*/
 
 // UI + handlers for editing figure blot (works with FigureBlot)
 ;(function(){
