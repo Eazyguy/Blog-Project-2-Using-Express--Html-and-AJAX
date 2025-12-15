@@ -64,7 +64,7 @@ del.addEventListener('click', e=>{
             })
         .then(()=>{
             alert('deleted')
-            window.location.href='/dashboard.html'
+            window.location.href='/secure/dashboard.html'
         }).catch(err=>{
             alert('error deleting,couldn\' delete')
         })

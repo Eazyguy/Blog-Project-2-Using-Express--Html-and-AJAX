@@ -57,65 +57,7 @@ if (postForm) {
 }
 
 
-
-const uploadedImages = []; // { id, file }
-let imageId = 0;
-
-
-function insertTempImage(file) {
-  const reader = new FileReader();
-  const id = 'temp-img-' + imageId++;
-  
-  reader.onload = () => {
-    const range = quill.getSelection(true);
-    quill.insertEmbed(range.index, 'image', reader.result);
-    uploadedImages.push({ id, file, base64: reader.result });
-  };
-  
-  reader.readAsDataURL(file);
-}
-
-quill.root.addEventListener('paste', (e) => {
-  const items = e.clipboardData?.items || [];
-  for (let item of items) {
-    if (item.type.startsWith('image/')) {
-      e.preventDefault();
-      insertTempImage(item.getAsFile());
-    }
-  }
-}, true);
-
-quill.root.addEventListener('drop', (e) => {[12/8, 22:50] const files = Array.from(e.dataTransfer?.files || []).filter(f => f.type.startsWith('image/'));
-  if (files.length) {
-    e.preventDefault();
-    files.forEach(file => insertTempImage(file));
-  }
-}, true);
-
-async function uploadImages() {
-  for (let { base64, file } of uploadedImages) {
-    const formData = new FormData();
-    formData.append('image', file);
-
-    const res = await fetch('/upload', { method: 'POST', body: formData });
-    const data = await res.json();
-
-    const delta = quill.getContents();
-    delta.ops.forEach(op => {
-      if (op.insert?.image === base64) {
-        op.insert.image = data.url;
-      }
-    });
-
-    quill.setContents(delta);
-  }
-
-  // Now the editor content is clean, submit it
-  const html = quill.root.innerHTML;
-  // Send html via fetch or form
-}
-
-/*const editor = document.querySelector('#editor')
+const editor = document.querySelector('#editor')
 
 editor.addEventListener('click', ()=>{
   quill.focus()
@@ -194,7 +136,7 @@ function uploadImage(file){
     quill.insertEmbed(index, 'figure', { src: data.url, alt: '', caption: '' })
     quill.setSelection(index + 1)
   })
-}*/
+}
 
 // UI + handlers for editing figure blot (works with FigureBlot)
 ;(function(){

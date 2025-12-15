@@ -15,8 +15,7 @@ body{
 #editor{
     height: 400px;
     pointer-events: auto;
-    user-select: text ;
-}
+    }
 
 #container-1{
     max-width: 700px;
@@ -207,6 +206,50 @@ display: none;
 .profile{
     width: 100px;
     height: 100px;
+}
+
+.feat-img{
+    height: 350px;
+}
+
+/* .overlay{
+    width: 100%;
+    height: 100%;
+    top: 0;
+    z-index: 1;
+    opacity:0.2
+}
+
+.overlay:hover{
+    opacity: 0.8;
+    transition: opacity 1s;
+} */
+
+/* .overlay-caption{
+    width: 100%;
+    height: 30%;
+    background-color: #008CBA; 
+    top: 65%;
+    bottom: 0;
+    z-index: 2;
+    } */
+
+    .carousel-caption {
+    position: absolute;
+    right: 0; 
+    bottom: 0;
+    left: 0;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    color: #fff;
+    background-color: rgba(0,0,0,0.7);
+    text-align: center;
+    z-index: 3;
+}
+
+.carousel-caption:hover{
+    height: 100%;
+    transition: height 5s ;
 }
 
 @media screen and (max-width:768px) {

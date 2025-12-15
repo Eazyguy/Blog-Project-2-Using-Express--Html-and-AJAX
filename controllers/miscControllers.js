@@ -10,7 +10,7 @@ const flash = (req,res)=>{
 }
 
 //@desc upload route
-//route POST /route
+//route POST /upload
 const uploadImage = (req, res)=>{
     upload(req, res, (err) => {
     if (err) {
@@ -21,6 +21,12 @@ const uploadImage = (req, res)=>{
       return res.status(400).json({ error: 'No file uploaded' })
     }
     const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+
+    // keep track of uploaded images
+    if(!req.session.uploadedImages) req.session.uploadedImages = []
+
+    req.session.uploadedImages.push(imageUrl)
+    console.log(req.session.uploadedImages)
     console.log('Uploaded ->', imageUrl)
     res.status(200).json({ url: imageUrl })
   })

@@ -1,3 +1,4 @@
+
 let postCard = document.getElementById('post-list')
 let template = document.getElementById('card-template')
 let spinner = document.getElementById('spinner')
@@ -12,7 +13,7 @@ fetch('/api/categories')
         listPost(cat,1)
     });
 
-    categories.slice(0,2).forEach(cat=>{
+    categories.slice(0,4).forEach(cat=>{
         featuredList(cat)
     })
 })
@@ -28,9 +29,17 @@ let featuredList = (category) =>{
         const featuredDiv = document.createElement('div')
         featuredDiv.className = 'col-12 col-md-6 col-lg-6 mb-1 p-1'
         const slideInner = clone.querySelector('.carousel-inner')
-        const postSlide = clone.getElementById('post-Slide')
+        
 
         post.forEach(feat=>{
+
+        const postSlide = clone.querySelector('.carousel')
+       
+      postSlide.id = `postSlide${feat.category.charAt(0).toUpperCase() + feat.category.slice(1)}`
+
+       
+
+        console.log(postSlide)
 
         let slideImageCon = document.createElement('div')
         console.log(post.indexOf(feat))
@@ -38,19 +47,46 @@ let featuredList = (category) =>{
         let slideImage = document.createElement('img')
         slideImage.className= 'd-block w-100 feat-img'
         slideImage.src = `${feat.featuredImage?feat.featuredImage : '/images/photo.png'}`
+
+         //caption
+        const caption = document.createElement('h5')
+        caption.textContent = feat.title.charAt(0).toUpperCase() + feat.title.slice(1)
+        const carouselCaption = document.createElement('div')
+        carouselCaption.className = 'carousel-caption d-md-block'
+        carouselCaption.appendChild(caption)
+
+        
+
         slideImageCon.appendChild(slideImage)
-        slideInner.appendChild(slideImageCon)
+        slideImageCon.appendChild(carouselCaption)
+
+        //link to post
+        const featuredLink = document.createElement('a')
+        featuredLink.href = `/posts.html?title=${feat.title}`
+        
+        featuredLink.appendChild(slideImageCon)
+
+        slideInner.appendChild(featuredLink)
+
+        
+
         
         })
 
+        
         console.log(featuredCon)
         featuredDiv.appendChild(clone)
         featuredCon.appendChild(featuredDiv)
+        featuredCon.querySelectorAll('.carousel').forEach((c)=>{
+            new bootstrap.Carousel(c)
+            
+        })
         
         }
     })
 }
 
+        
 featuredList()
 
 let listPost =(category,page)=>{

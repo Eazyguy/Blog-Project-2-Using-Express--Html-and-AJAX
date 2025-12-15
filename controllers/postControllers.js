@@ -86,8 +86,24 @@ const addPost = (req,res)=>{
     post.featuredImage = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     post.keywords = req.body.keywords
 
-    console.log(req.body)
-    let errors = validationResult(req)
+    const uploadedImages = req.session.uploadedImages || []
+
+    const usedImages = cheerio(req.body.body)
+    
+    //determine unused images
+    const unusedImages = uploadedImages.filter(img=>!usedImages.includes(img))
+
+    unusedImages.map(img=>{
+        const url = new URL(img)
+        const imageUrl = decodeURIComponent(url.pathname)
+        const imagePath = path.join(__dirname,'..','public',imageUrl)
+
+        fs.unlink(imagePath).catch(err=>console.error('deleting failed:', err))
+
+        delete req.session.uploadedImages
+    })
+
+     let errors = validationResult(req)
 
      console.log(errors.array())
 
@@ -160,29 +176,35 @@ const searchPost = (req, res)=>{
 //@route /api/posts/delete/:id
 const deletePost = (req,res)=>{
     const id = req.params.id
+
     Posts.findOne({_id:id})
     .then(post =>{
+        if(!post){
+            res.status(404).send('Post not found')
+        }
+
+        // Extract image links from body
         const images = cheerio(post.body)
         const imageLinks = [post.featuredImage, ...images]
         
         const deletePromises = imageLinks.map(img=>{
             try {
-                const url = new URL(img)
+            const url = new URL(img)
             const imageUrl = decodeURIComponent(url.pathname)
             const imagePath = path.join(__dirname,'..','public',imageUrl)
 
             return fs.unlink(decodeURIComponent(imagePath))
             .catch(err=>{
-                res.status(500).send('deleting image error')
-                console.log('error deleting image', err)
+                console.warn('error deleting image', err)
             })
             } catch (error) {
-                console.error('image delete failed:', error.message)
+                console.warn('image delete failed:', error.message)
+                return Promise.resolve()
             }
         })
 
         return Promise.all(deletePromises).then(()=>{
-            Posts.deleteOne({_id:id})
+           return Posts.deleteOne({_id:id})
         }) 
     }).then((del) => {
         if(del.deletedCount == 0){
@@ -190,8 +212,7 @@ const deletePost = (req,res)=>{
         }else{
          return res.status(200).json({msg:'successfully deleted'})       
         }
-    }).catch(err=>console.error(err))
-    res.status(500).send('server error')
+    })
     
 }
 
