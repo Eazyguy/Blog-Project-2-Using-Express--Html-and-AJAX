@@ -161,6 +161,24 @@ The application uses session-based authentication with `express-session` and `co
 
 The app depends on a valid MongoDB connection string and a secret session key from the environment. If `DATABASE` is missing or the database is unavailable, the app will not work as expected.
 
+## Demo / Preview
+
+Once the app is running locally, open the following URL in your browser:
+
+```text
+http://localhost:3000
+```
+
+You can use the public blog pages to browse posts and categories, and the secured admin section to create and manage content after logging in.
+
+### Example Preview
+
+```md
+![Blog Project 2 Demo](./public/images/demo-preview.png)
+```
+
+If you add a local screenshot later, place it in `public/images/` and replace the path above with the actual image file name.
+
 ## Notes
 
 - The project does not include a dedicated automated test suite.
