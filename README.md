@@ -173,11 +173,9 @@ You can use the public blog pages to browse posts and categories, and the secure
 
 ### Example Preview
 
-```md
 ![Blog Project 2 Demo](./public/images/demo-preview.png)
-```
 
-If you add a local screenshot later, place it in `public/images/` and replace the path above with the actual image file name.
+You can add more screenshots in `public/images/` and reference them the same way.
 
 ## Notes
 
