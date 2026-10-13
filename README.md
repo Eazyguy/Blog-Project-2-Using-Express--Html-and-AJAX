@@ -175,6 +175,10 @@ You can use the public blog pages to browse posts and categories, and the secure
 
 ![Blog Project 2 Demo](./public/images/demo-preview.png)
 
+![Blog Project 2 Demo](./public/images/demo-preview2.png)
+
+![Blog Project 2 Demo](./public/images/demo-preview3.png)
+
 You can add more screenshots in `public/images/` and reference them the same way.
 
 ## Notes
